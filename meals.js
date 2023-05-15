@@ -11,7 +11,7 @@ const loadSingleMeal = (meals) => {
     const div = document.createElement("div");
     div.classList.add("col");
     div.innerHTML = `
-        <div class="card">
+        <div class="card" onclick="displayDetail()">
         <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">${meal.strMeal}</h5>
@@ -25,7 +25,10 @@ const loadSingleMeal = (meals) => {
 const searchFood = () => {
   const searchFiled = document.getElementById("search-filed");
   const result = searchFiled.value;
-  console.log(result);
+  // console.log(result);
   loadMeals(result);
+};
+const displayDetail = () => {
+    console.log('ok')
 };
 loadMeals("a");
