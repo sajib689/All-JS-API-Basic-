@@ -1,19 +1,29 @@
-const loadPhone = async(search) => {
+const loadPhone = async(search, dataLimit) => {
     const url = `https://openapi.programming-hero.com/api/phones?search=${search}`
     const res = await fetch(url)
     const data = await res.json()
-    displayPhone(data.data)
+    displayPhone(data.data, dataLimit)
 }
-const displayPhone = phones => {
+const displayPhone = (phones, dataLimit) => {
     const phoneContainer = document.getElementById('phone-container')
    phoneContainer.innerText = ``
-   phones = phones.slice(0, 10)
+  //  Length of the displayPhone element
+  const showAll = document.getElementById('show-all')
+   if(dataLimit && phones.length > 9) {
+    phones = phones.slice(0, 9)
+    
+    showAll.classList.remove('d-none')
+   } else{
+    showAll.classList.add('d-none')
+   }
+  
    const hidden = document.getElementById('hidden')
    if(phones.length  === 0) {
       hidden.classList.remove('d-none')
    } else{
     hidden.classList.add('d-none')
    }
+   
     phones.forEach( phone => {
         console.log(phone)
         const div = document.createElement('div')
@@ -29,11 +39,33 @@ const displayPhone = phones => {
         `
         phoneContainer.appendChild(div)
     })
+    toggleSpinner(false)
+}
+const processSearches = (dataLimit) =>{
+  toggleSpinner(true)
+  const searchFiled = document.getElementById('search-filed')
+  const result = searchFiled.value
+  console.log(result)
+  loadPhone(result, dataLimit)
 }
 const searchPhones = () => {
-    const searchFiled = document.getElementById('search-filed')
-    const result = searchFiled.value
-    console.log(result)
-    loadPhone(result)
+
+  processSearches(9)
+  // toggleSpinner(true)
+  //   const searchFiled = document.getElementById('search-filed')
+  //   const result = searchFiled.value
+  //   console.log(result)
+  //   loadPhone(result)
 }
+const toggleSpinner = isLoading => {
+  const spinner =  document.getElementById('spinner')
+   if (isLoading) {
+    spinner.classList.remove('d-none')
+   } else{
+    spinner.classList.add('d-none')
+   }
+}
+document.getElementById('btn-show-all').addEventListener('click', function() {
+  processSearches()
+})
 loadPhone('')
