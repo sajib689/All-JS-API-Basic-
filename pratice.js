@@ -25,7 +25,7 @@ const displayPhone = (phones, dataLimit) => {
    }
    
     phones.forEach( phone => {
-        console.log(phone)
+        // console.log(phone)
         const div = document.createElement('div')
         div.classList.add('col')
         div.innerHTML = `
@@ -34,6 +34,7 @@ const displayPhone = (phones, dataLimit) => {
         <div class="card-body">
           <h5 class="card-title">${phone.phone_name}</h5>
           <p class="card-text">${phone.slug}</p>
+          <div id="btn-show-all" class="btn btn-primary" onclick="showDetails('${phone.slug}')">Show Detail</div>
         </div>
       </div>
         `
@@ -68,4 +69,9 @@ const toggleSpinner = isLoading => {
 document.getElementById('btn-show-all').addEventListener('click', function() {
   processSearches()
 })
+const showDetails = id => {
+  fetch(` https://openapi.programming-hero.com/api/phone/${id}`)
+  .then(res => res.json())
+  .then(data => console.log(data.data))
+}
 loadPhone('')
